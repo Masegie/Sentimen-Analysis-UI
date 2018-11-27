@@ -7,6 +7,10 @@ body {
   color: #6c757d;
 }
 
+h1 {
+  color: #fff;
+}
+
 a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;

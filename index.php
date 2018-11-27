@@ -23,34 +23,16 @@
   <body>
     
     <header role="banner">
-     
-      <nav class="navbar navbar-expand-md navbar-dark bg-light">
-        <div class="container">
-          <a class="navbar-brand" href="index.php"> </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse navbar-light" id="navbarsExample05">
-            <ul class="navbar-nav ml-auto pl-lg-5 pl-0">
-              <li class="nav-item">
-                <a class="nav-link active" href="index.php">Tugas Besar Kelompok - G</a>
-              </li>
-            </ul>
-            
-          </div>
-        </div>
-      </nav>
     </header>
     <!-- END header -->
 
-    <section class="site-hero overlay" data-stellar-background-ratio="0.5" style="background-image: url(images/big_image_1.jpg);">
+    <section class="site-hero" data-stellar-background-ratio="0.5" style="background-color: #fffff  ">
       <div class="container">
-        <div class="row align-items-center site-hero-inner justify-content-center">
-          <div class="col-md-8 text-center">
+        <div>
+          <div class="col-md-8">
 
             <div class="mb-5 element-animate">
-              <h1>KLASISIFIKASI JENIS KALIMAT DARI TWITTER</h1>
+              <h1>Sentiment Analisis Pantai Parangtritis berdasar Tweet</h1>
             </div>
 
             <form id="input_artikel" class="mb-5 element-animate" action="{{url('submit_text.store')}}">
@@ -58,14 +40,14 @@
               <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
               <div class="form-group">
-                <input type="text" name="test_sentiments" id="text_sentiments" class="form-control form-control-block search-input" placeholder="Masukan Kalimat disini....">
+                <input type="text" name="textSentence" id="text_sentence" class="form-control form-control-block search-input" placeholder="Masukan Kalimat disini....">
               </div> 
               <input class="form-group" type="hidden" name="categoryPredict" id="category_predict" />     
-              <button type="button" class="btn btn-primary" id="submit_text" >Klasifikasi</button>
+              <button type="button" class="btn" id="submit_text" >Test </button>
             </form>
 
             <div class="mb-5 element-animate">
-              <h6 class="yasudah" >Jadi kalimat tersebut merupakan jenis kalimat : </h6>
+              <h6 class="yasudah" >Jadi kata / kalimat ini termasuk : </h6>
                 <label class="yasudah" for="testResult" id="predictResult"></label>
             </div>
           </div>
@@ -90,12 +72,10 @@
       function fillInAddress() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-
         for (var component in componentForm) {
           document.getElementById(component).value = '';
           document.getElementById(component).disabled = false;
         }
-
         // Get each component of the address from the place details
         // and fill the corresponding field on the form.
         for (var i = 0; i < place.address_components.length; i++) {
@@ -123,19 +103,24 @@
                 });
                 $('#submit_text').click(function(){
                     $('#predictResult').empty();
-                    var text=$('#text_sentiments').val();
+                    var text=$('#text_sentence').val();
                     
                     $.ajax({
                     type: "POST",
                     url:"https://tugasbesarnlp.herokuapp.com/input/task",
-                    data:'{"tweet":"'+text+'"}',
+                    data:'{"textSentence":"'+text+'"}',
                     contentType: 'application/json; charset=utf-8',
                     dataType: "json",
                     success:function(data){
                         console.log(data);
                         var dataTemp=data['message'];
-                        $('#predictResult').append(dataTemp);
-                        $('#category_predict').val(dataTemp);
+                        if (dataTemp == "[1]"){
+                          dataTemp1 = "Positive";
+                        } else {
+                          dataTemp1 = "Negative";
+                        }
+                        $('#predictResult').append(dataTemp1);
+                        $('#category_predict').val(dataTemp1);
                     }
                 });
             });
